@@ -337,18 +337,18 @@ format:
 
 # Testing
 # --------------------------------------------------------------------
-.PHONY: tests tests_coverage tests_mission tests_mission_coverage tests_offboard tests_avoidance unit_test
+.PHONY: test tests_coverage tests_mission tests_mission_coverage tests_offboard tests_avoidance unit_test
 .PHONY: rostest python_coverage
 
-unit_test:
-	$(eval CMAKE_ARGS += -Dunit_testing=ON)
+test:
+	$(eval CMAKE_ARGS += -Dtesting=ON)
 	$(eval ARGS += unit_test)
 	$(call cmake-build,px4_sitl_default)
 
 tests:
-	@$(MAKE) --no-print-directory px4_sitl_test test_results \
-	ASAN_OPTIONS="color=always:check_initialization_order=1:detect_stack_use_after_return=1" \
-	UBSAN_OPTIONS="color=always"
+	$(eval CMAKE_ARGS += -Dtesting=ON)
+	$(eval ARGS += test_results)
+	$(call cmake-build,px4_sitl_default)
 
 tests_coverage:
 	@$(MAKE) clean
